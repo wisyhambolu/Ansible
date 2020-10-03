@@ -28,3 +28,18 @@
       template: Redhat7_template
       validate_certs: 'False'
       wait_for_ip_address: 'yes'
+  - name: Create test file
+    community.vmware.vmware_vm_shell:
+      datacenter: LAB-01
+      folder: "/"
+      vm_id: testvm_1
+      vm_username: root
+      vm_password: Password@1234
+      vm_shell: /bin/echo
+      vm_shell_args: " $var >> myFile "
+      vm_shell_env:
+        - "PATH=/bin"
+        - "VAR=test"
+      vm_shell_cwd: "/tmp"
+    delegate_to: localhost
+    register: shell_command_output
