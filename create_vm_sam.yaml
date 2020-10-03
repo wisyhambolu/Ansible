@@ -28,6 +28,7 @@
       template: RedHat7
       validate_certs: 'False'
       wait_for_ip_address: 'yes'
+  - name: Setup Networking
     community.vmware.vmware_vm_shell:
       datacenter: LAB-01
       folder: "/"
