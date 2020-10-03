@@ -10,7 +10,7 @@
       name: testvm_1
       disk:
       - datastore: datastore1
-        size_gb: '21'
+        size_gb: '17'
         type: thin
       folder: /
       hardware:
@@ -25,6 +25,6 @@
         netmask: 255.255.255.0
         type: static
       state: poweredon
-      template: RedHat7
+      template: Redhat7_template
       validate_certs: 'False'
       wait_for_ip_address: 'yes'
