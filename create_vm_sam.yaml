@@ -10,7 +10,7 @@
       name: testvm_1
       disk:
       - datastore: datastore1
-        size_gb: '8'
+        size_gb: '21'
         type: thin
       folder: /
       hardware:
