@@ -1,29 +1,39 @@
 ---
-- name: Create a VM from a template
-  hosts: localhost
-  connection: local
-  gather_facts: no
-  tasks:
-  - name: Clone the template
-    vmware_guest:
-      validate_certs: False
-      name: testvm_1
-      template: RedHat
-      datacenter: LAB-01
-      state: poweredon
-      wait_for_ip_address: yes
-      folder: /
-    community.vmware.vmware_vm_shell:
-      datacenter: LAB-01
-      folder: "/"
-      vm_id: testvm_1
-      vm_username: root
-      vm_password: superSecret
-      vm_shell: /bin/echo
-      vm_shell_args: " $var >> myFile "
-      vm_shell_env:
-        - "PATH=/bin"
-        - "VAR=test"
-      vm_shell_cwd: "/tmp"
-    delegate_to: localhost
-    register: shell_command_output
+- name: Clone the template
+  vmware_guest:
+    datacenter: LAB-01
+    name: testvm_1
+    disk:
+    - datastore: datastore1
+      size_gb: '8'
+      type: thin
+    folder: /
+    hardware:
+      memory_mb: 1024
+      num_cpu_cores_per_socket: 1
+      num_cpus: 1
+    networks:
+    - device_type: vmxnet3
+      gateway: 10.70.14.210
+      ip: 10.70.14.1
+      name: "VM portgroup_2"
+      netmask: 255.255.255.0
+      type: static
+    state: poweredon
+    template: RedHat7
+    validate_certs: 'False'
+    wait_for_ip_address: 'yes'
+  community.vmware.vmware_vm_shell:
+    datacenter: LAB-01
+    folder: "/"
+    vm_id: testvm_1
+    vm_username: root
+    vm_password: Password@1234
+    vm_shell: /bin/echo
+    vm_shell_args: " $var >> myFile "
+    vm_shell_env:
+      - "PATH=/bin"
+      - "VAR=test"
+    vm_shell_cwd: "/tmp"
+  delegate_to: localhost
+  register: shell_command_output
