@@ -1,0 +1,29 @@
+---
+- name: Create a VM from a template
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+  - name: Clone the template
+    vmware_guest:
+      validate_certs: False
+      name: testvm_1
+      template: RedHat
+      datacenter: LAB-01
+      state: poweredon
+      wait_for_ip_address: yes
+      folder: /
+    community.vmware.vmware_vm_shell:
+      datacenter: LAB-01
+      folder: "/"
+      vm_id: testvm_1
+      vm_username: root
+      vm_password: superSecret
+      vm_shell: /bin/echo
+      vm_shell_args: " $var >> myFile "
+      vm_shell_env:
+        - "PATH=/bin"
+        - "VAR=test"
+      vm_shell_cwd: "/tmp"
+    delegate_to: localhost
+    register: shell_command_output
